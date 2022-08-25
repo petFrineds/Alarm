@@ -2,9 +2,9 @@ package petfriends;
 
 import lombok.extern.slf4j.Slf4j;
 import petfriends.config.KafkaProcessor;
-import petfriends.mypage.dto.*;
-import petfriends.mypage.model.MyPage;
-import petfriends.mypage.repository.MyPageRepository;
+import petfriends.alarm.dto.*;
+import petfriends.alarm.model.Alarm;
+import petfriends.alarm.repository.AlarmRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -25,110 +25,44 @@ public class PolicyHandler{
     }
     
     @Autowired
-    MyPageRepository mypageRepository;
-
-    //예약 신규 등록
-    @StreamListener(KafkaProcessor.INPUT)
-    public void wheneverCreated_(@Payload Created created)
-    {
-        if(created.isMe()){
-            Optional<MyPage> mypageOptional = mypageRepository.findByReservedId(created.getReservedId());
-
-            MyPage myPage = new MyPage();
-            myPage.setReservedId(created.getReservedId());
-            myPage.setStartTime(created.getStartTime());
-            myPage.setEndTime(created.getEndTime());
-            myPage.setDogwalkerScheduleId(created.getDogwalkerScheduleId());
-            myPage.setDogwalkerId(created.getDogwalkerId());
-            myPage.setDogwalkerName(created.getDogwalkerName());
-            myPage.setUserId(created.getUserId());
-            myPage.setUserName(created.getUserName());
-            myPage.setAmount(created.getAmount());
-            myPage.setStatus(created.getStatus());
-
-            LocalDateTime current = LocalDateTime.now();
-            myPage.setRegDate(java.sql.Timestamp.valueOf(current));
-            myPage.setUpdDate(java.sql.Timestamp.valueOf(current));
-
-            if(!mypageOptional.isPresent()) { // 동일 예약건이 없을 때
-                mypageRepository.save(myPage);
-            }else{
-                new RuntimeException("결재완료에 해당하는 예약 번호가 존재하지 않습니다.");
-            }
-        }
-    }
-
-
-    // 상태변경 - 결재완료
-    @StreamListener(KafkaProcessor.INPUT)
-    public void wheneverPayed_(@Payload Payed payed)
-    {
-        log.info(">> WheneverPayed --> " + payed.toString() + " // " + payed.getReservedId());
-
-        if(payed.isMe()){
-            log.info(">> WheneverPayed --> isMe " + payed.toString() + " // " + payed.getReservedId());
-
-            Optional<MyPage> mypageOptional = mypageRepository.findByReservedId(payed.getReservedId());
-
-            if(mypageOptional.isPresent()) {
-
-                log.info(">> WheneverPayed --> isPresent " + payed.toString() + " // " + payed.getReservedId());
-
-                MyPage mypage = mypageOptional.get();
-                mypage.setStatus(ReservationStatus.PAYED);
-                mypage.setPayGubun(payed.getPayGubun());
-                mypage.setPayType(payed.getPayType());
-                mypage.setAmount(payed.getAmount());
-                mypageRepository.save(mypage);
-            }
-        }
-    }
+    AlarmRepository alarmRepository;
 
     // 산책 시작
     @StreamListener(KafkaProcessor.INPUT)
     public void wheneverWalkStarted_(@Payload WalkStarted walkStarted) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-        if(walkStarted.isMe()){
-            Optional<MyPage> mypageOptional = mypageRepository.findByReservedId(walkStarted.getReservedId());
-
-            if(mypageOptional.isPresent()) {
-                MyPage mypage = mypageOptional.get();
-                mypage.setStatus(ReservationStatus.START); // 산책시작
-
-                Date walkStartDate = format.parse(walkStarted.getWalkStartDate());
-                mypage.setWalkStartDate(walkStartDate);
-
-                LocalDateTime current = LocalDateTime.now();
-                mypage.setUpdDate(java.sql.Timestamp.valueOf(current));
-
-                mypageRepository.save(mypage);
-            }
+        if(walkStarted.isMe()) {
+            Alarm alarm = new Alarm();
+            alarm.setReservedId(walkStarted.getReservedId());
+            alarm.setDogWalkerId(walkStarted.getDogWalkerId());
+            alarm.setUserId(walkStarted.getUserId());
+            alarm.setMessage(
+                    String.format("예약번호 %s 의 산책이 %s 에 시작되었습니다",
+                            walkStarted.getReservedId().toString(),
+                            walkStarted.getWalkStartDate()));
+            LocalDateTime current = LocalDateTime.now();
+            alarm.setRegDate(java.sql.Timestamp.valueOf(current));
+            alarmRepository.save(alarm);
         }
     }
 
     @StreamListener(KafkaProcessor.INPUT)
     public void wheneverWalkEnded_(@Payload WalkEnded walkEnded) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-        if(walkEnded.isMe()){
-            Optional<MyPage> mypageOptional = mypageRepository.findById(walkEnded.getReservedId());
-            if(mypageOptional.isPresent()) {
-                MyPage mypage = mypageOptional.get();
-                mypage.setStatus(ReservationStatus.END); // 산책종료
-
-                Date walkEndDate = format.parse(walkEnded.getWalkEndDate());
-                mypage.setWalkStartDate(walkEndDate);
-
-                LocalDateTime current = LocalDateTime.now();
-                mypage.setUpdDate(java.sql.Timestamp.valueOf(current));
-
-                mypageRepository.save(mypage);
-
-            }
+        if(walkEnded.isMe()) {
+            Alarm alarm = new Alarm();
+            alarm.setReservedId(walkEnded.getReservedId());
+            alarm.setDogWalkerId(walkEnded.getDogWalkerId());
+            alarm.setUserId(walkEnded.getUserId());
+            alarm.setMessage(
+                    String.format("예약번호 %s 의 산책이 %s 에 종료되었습니다",
+                            walkEnded.getReservedId().toString(),
+                            walkEnded.getWalkEndDate()));
 
 
-            //에약 취소 추가 해야함
+            LocalDateTime current = LocalDateTime.now();
+            alarm.setRegDate(java.sql.Timestamp.valueOf(current));
+
+            alarmRepository.save(alarm);
         }
     }
 }

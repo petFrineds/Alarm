@@ -8,11 +8,13 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Reservation" />
         <module name="MyPage" />
+        <module name="Alarm" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Alarm" options="-parameters" />
       <module name="MyPage" options="-parameters" />
       <module name="Reservation" options="-parameters" />
     </option>

@@ -20,8 +20,8 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("petfriends.reservation.controller"))
-                .paths(PathSelectors.ant("/reservations/**"))
+                .apis(RequestHandlerSelectors.basePackage("petfriends.alarm.controller"))
+                .paths(PathSelectors.ant("/alarms/**"))
                 .build()
                 .apiInfo(apiInfo());
     }
@@ -29,10 +29,10 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfo(
                 "Reservation",
-                "예약서비스 API.",
+                "알림서비스 API.",
                 "0.0.1",
                 "Terms of service",
-                new Contact("Reservation", "", ""),
+                new Contact("Alarm", "", ""),
                 "License of API", "API license URL", Collections.emptyList());
     }
 }

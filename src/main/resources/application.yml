@@ -1,5 +1,5 @@
 server:
-  port: 8085
+  port: 8086
 ---
 
 spring:
@@ -106,5 +106,6 @@ api:
     payment: http://payment-backend:8080
     walk: http://walk-backend:8080
     dogwalkerSchedule: http://dogwalkerSchedule-backend:8080
+    reservation: http://reservation-backend:8080
 
 

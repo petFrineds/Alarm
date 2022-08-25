@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mypage-backend
+  name: alarm-backend
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mypage-backend
+      app: alarm-backend
   template:
     metadata:
       labels:
-        app: mypage-backend
+        app: alarm-backend
     spec:
       containers:
-        - name: mypage-backend
-          image: 811288377093.dkr.ecr.us-west-2.amazonaws.com/mypage-backend:latest
+        - name: alarm-backend
+          image: 811288377093.dkr.ecr.us-west-2.amazonaws.com/alarm-backend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

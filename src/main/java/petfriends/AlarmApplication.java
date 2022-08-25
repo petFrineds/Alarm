@@ -11,9 +11,9 @@ import petfriends.config.KafkaProcessor;
 @SpringBootApplication
 @EnableBinding(KafkaProcessor.class)
 @EnableFeignClients
-public class MyPageApplication {
+public class AlarmApplication {
     public static ApplicationContext applicationContext;
     public static void main(String[] args) {
-        applicationContext = SpringApplication.run(MyPageApplication.class, args);
+        applicationContext = SpringApplication.run(AlarmApplication.class, args);
     }
 }

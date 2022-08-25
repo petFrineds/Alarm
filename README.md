@@ -5,36 +5,15 @@
 
 mariadb 5.5 버전에서는 TIMESTAMP를 한 컬럼만 사용이 가능하고 NOW() 함수를 쓸수가 없다.... 
 
-CREATE TABLE mypage (
-id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-reserved_id BIGINT(20) NOT NULL ,
-
-start_time DATETIME NULL DEFAULT NULL,
-end_time DATETIME NULL DEFAULT NULL,
-
-dogwalker_schedule_id BIGINT(20) NOT NULL,
+CREATE TABLE alarm (
+alarm_id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+message NVARCHAR(500) NULL,
+reserved_id BIGINT(20) NOT NULL,
 dogwalker_id NVARCHAR(50) NULL,
-dogwalker_name NVARCHAR(50) NULL,
-
-status NVARCHAR(20) NOT NULL DEFAULT '1',
-
 user_id NVARCHAR(50) DEFAULT NULL,
-user_name NVARCHAR(50) DEFAULT NULL,
-amount DOUBLE NULL DEFAULT NULL,
-
-pay_gubun NVARCHAR(50) DEFAULT NULL,
-pay_type NVARCHAR(50) DEFAULT NULL,
-
-walk_start_date DATETIME,
-walk_end_date DATETIME,
-
-reg_date DATETIME,
-upd_date DATETIME
+reg_date DATETIME
 ) COLLATE='utf8mb4_general_ci' ENGINE=InnoDB ;
  
-insert샘플:
-insert into mypage (reserved_id, start_time, end_time, dogwalker_schedule_id, dogwalker_id, dogwalker_name, user_id, user_name, amount, status, pay_gubun, pay_type, walk_start_date, walk_end_date) 
-values (20, "2022-08-22 19:00:00", "2022-08-22 21:00:00", 1, "mimi_id", "mimi", "geny_id", "geny",  40000, "REQUEST", "PAY", "CARD", "2022-08-22 18:50:00", "2022-08-22 22:03:00");
 
 
 ---------------------------------------------------  

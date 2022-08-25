@@ -1,4 +1,4 @@
-package petfriends.mypage.dto;
+package petfriends.alarm.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public enum SmsStatus {
 
-    START,
-    END
-
+	START,
+	END
+	
 }

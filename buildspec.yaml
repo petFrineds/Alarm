@@ -34,7 +34,7 @@ phases:
       - AWS_ECR_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:v$CODEBUILD_BUILD_NUMBER
       - DATE='date'
       - echo Build completed on $DATE
-      - sed -i.bak 's#AWS_ECR_URI#'"$AWS_ECR_URI"'#' ./manifests/mypage-deployment.yaml
-      - sed -i.bak 's#DATE_STRING#'"$DATE"'#' ./manifests/mypage-deployment.yaml
-      - kubectl apply -f ./manifests/mypage-deployment.yaml
-      - kubectl apply -f ./manifests/mypage-service.yaml
+      - sed -i.bak 's#AWS_ECR_URI#'"$AWS_ECR_URI"'#' ./manifests/alarm-deployment.yaml
+      - sed -i.bak 's#DATE_STRING#'"$DATE"'#' ./manifests/alarm-deployment.yaml
+      - kubectl apply -f ./manifests/alarm-deployment.yaml
+      - kubectl apply -f ./manifests/alarm-service.yaml
