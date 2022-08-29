@@ -20,20 +20,18 @@ reg_date DATETIME
 2. 배포 방법
 ---------------------------------------------------  
 ec2에 reservation 테이블 만들기, 데이터 insert 
-git git clone https://github.com/petFrineds/Reservation.git
+git git clone https://github.com/petFrineds/Alarm.git
 mvn install
-aws ecr create-repository --repository-name reservation-backend -- image-scanning-configuration scanOnPush=true --region ${AWS_REGION}
-docker build -t reservation-backend . -v /etc/localtime:/etc/localtime:ro -e TZ=Asia/Seoul
-docker run ... -v /etc/localtime:/etc/localtime:ro -e TZ=Asia/Seoul ...
-
-docker tag reservation-backend:latest 811288377093.dkr.ecr.$AWS_REGION.amazonaws.com/reservation-backend:latest
-docker push 811288377093.dkr.ecr.us-west-2.amazonaws.com/reservation-backend:latest
+aws ecr create-repository --repository-name alarm-backend -- image-scanning-configuration scanOnPush=true --region ${AWS_REGION}
+docker build -t alarm-backend .
+docker tag alarm-backend:latest 811288377093.dkr.ecr.$AWS_REGION.amazonaws.com/alarm-backend:latest
+docker push 811288377093.dkr.ecr.us-west-2.amazonaws.com/alarm-backend:latest
 aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 811288377093.dkr.ecr.us-west-2.amazonaws.com/
 cd manifests
 -- 여기서 부터는 ec2-user 사경
-kubectl apply -f reservation-deployment.yaml
+kubectl apply -f manifests/alarm-deployment.yaml
 kubectl get deploy
-kubectl apply -f reservation-service.yaml
+kubectl apply -f manifests/alarm-service.yaml
 kubectl get service
 kubectl get ingress
 

@@ -87,7 +87,7 @@ spring:
                   serde: org.apache.kafka.common.serialization.Serdes$StringSerde
       bindings:
         event-in:
-          group: Reservation
+          group: Alarm
           destination: petfriends
           contentType: application/json
         event-out:
