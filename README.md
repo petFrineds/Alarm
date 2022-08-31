@@ -20,9 +20,9 @@ reg_date DATETIME
 2. 배포 방법
 ---------------------------------------------------  
 ec2에 reservation 테이블 만들기, 데이터 insert 
-git git clone https://github.com/petFrineds/Alarm.git
+git clone https://github.com/petFrineds/Alarm.git
 mvn install
-aws ecr create-repository --repository-name alarm-backend -- image-scanning-configuration scanOnPush=true --region ${AWS_REGION}
+aws ecr create-repository --repository-name alarm-backend --image-scanning-configuration scanOnPush=true --region us-west-2
 docker build -t alarm-backend .
 docker tag alarm-backend:latest 811288377093.dkr.ecr.$AWS_REGION.amazonaws.com/alarm-backend:latest
 docker push 811288377093.dkr.ecr.us-west-2.amazonaws.com/alarm-backend:latest
