@@ -11,7 +11,8 @@ message NVARCHAR(500) NULL,
 reserved_id BIGINT(20) NOT NULL,
 dogwalker_id NVARCHAR(50) NULL,
 user_id NVARCHAR(50) DEFAULT NULL,
-reg_date DATETIME
+reg_date DATETIME,
+read_yn NVARCHAR(1) NULL
 ) COLLATE='utf8mb4_general_ci' ENGINE=InnoDB ;
  
 

@@ -42,6 +42,7 @@ public class PolicyHandler{
                             walkStarted.getWalkStartDate()));
             LocalDateTime current = LocalDateTime.now();
             alarm.setRegDate(java.sql.Timestamp.valueOf(current));
+            alarm.setReadYn("N"); // 안읽음 처리
             alarmRepository.save(alarm);
         }
     }
