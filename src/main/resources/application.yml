@@ -9,14 +9,14 @@ spring:
     url: jdbc:mariadb://localhost:3306/petfriends?characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: 1234
-    
+
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
         format_sql: true #To beautify or pretty print the SQL
-        show_sql: true #show sql       
+        show_sql: true #show sql
   cloud:
     stream:
       kafka:
@@ -51,6 +51,8 @@ api:
   url:
     payment: http://localhost:8084
 
+jwt:
+  secret: bHYz66W8IOychO2VnCBwZXRmcmllbmRzIOydh
 
 ---
 
@@ -108,4 +110,5 @@ api:
     dogwalkerSchedule: http://dogwalkerSchedule-backend:8080
     reservation: http://reservation-backend:8080
 
-
+jwt:
+  secret: bHYz66W8IOychO2VnCBwZXRmcmllbmRzIOydh
