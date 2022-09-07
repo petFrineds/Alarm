@@ -58,7 +58,7 @@ public class PolicyHandler{
                     String.format("예약번호 %s 의 산책이 %s 에 종료되었습니다",
                             walkEnded.getReservedId().toString(),
                             walkEnded.getWalkEndDate()));
-
+            alarm.setReadYn("N"); // 안읽음 처리
 
             LocalDateTime current = LocalDateTime.now();
             alarm.setRegDate(java.sql.Timestamp.valueOf(current));
