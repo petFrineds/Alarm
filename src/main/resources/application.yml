@@ -3,13 +3,6 @@ server:
 ---
 
 spring:
-  application:
-    name: Alarm
-  sleuth:
-    sampler:
-      probability: 1.0
-  zipkin:
-    base-url: http://localhost:9411
   profiles: default
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -70,7 +63,7 @@ spring:
       sampler:
         probability: 1.0
     zipkin:
-      base-url: http://${HOST_NAME}:9411
+      base-url: ${HOST_NAME}}:9411
   profiles: docker
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
